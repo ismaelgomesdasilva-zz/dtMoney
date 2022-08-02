@@ -72,4 +72,5 @@ transition: filter 0.2 ease-in-out;
 filter: brightness(0.7);
 }
 }
+
 `;
