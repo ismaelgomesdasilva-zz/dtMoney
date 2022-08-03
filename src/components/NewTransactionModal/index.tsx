@@ -1,32 +1,35 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import Modal from "react-modal";
 import closeImage from "../../assets/close.svg";
 import incomeImg from "../../assets/income.svg";
 import outcome from "../../assets/outcome.svg";
-import { api } from "../services/api";
+import { api } from "../../services/api";
+import { TransactionsContext } from "../../services/context/Transactions";
 import { Container, TransactionTypeContainer, RadioBox } from "./styles";
+
 type NewTransactionModalProps = {
 	isOpen: boolean;
 	onRequestClose: () => void;
 };
+
 export function NewTransactionModal({
 	isOpen,
 	onRequestClose,
 }: NewTransactionModalProps) {
 	const [title, setTitle] = useState("");
 	const [category, setCategory] = useState("");
-	const [value, setValue] = useState(0);
-	const [typeTransaction, setTypeTransaction] = useState("deposit");
+	const [amount, setAmount] = useState(0);
+	const [type, setType] = useState("deposit");
+	const { createTransactions } = useContext(TransactionsContext);
 
 	function handleCreateNewTransaction(event: FormEvent) {
 		event.preventDefault();
-		const data = {
+		createTransactions({
 			title,
+			amount,
 			category,
-			value,
-			typeTransaction,
-		};
-		api.post("/transactions", data);
+			type,
+		});
 	}
 
 	return (
@@ -53,16 +56,16 @@ export function NewTransactionModal({
 				<input
 					placeholder="Valor"
 					type="number"
-					value={value}
-					onChange={(e) => setValue(Number(e.target.value))}
+					value={amount}
+					onChange={(e) => setAmount(Number(e.target.value))}
 				/>
 				<TransactionTypeContainer>
 					<RadioBox
 						type="button"
-						isActive={typeTransaction === "deposit"}
+						isActive={type === "deposit"}
 						activeColor="green"
 						onClick={() => {
-							setTypeTransaction("deposit");
+							setType("deposit");
 						}}
 					>
 						<img src={incomeImg} alt="Entrada" />
@@ -70,10 +73,10 @@ export function NewTransactionModal({
 					</RadioBox>
 					<RadioBox
 						type="button"
-						isActive={typeTransaction === "withdraw"}
+						isActive={type === "withdraw"}
 						activeColor="red"
 						onClick={() => {
-							setTypeTransaction("withdraw");
+							setType("withdraw");
 						}}
 					>
 						<img src={outcome} alt="Saida" />
