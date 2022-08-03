@@ -15,19 +15,11 @@ createServer({
 			transactions: [
 				{
 					id: 1,
-					title: "freela",
+					title: "Salario",
 					type: "deposit",
-					category: "any",
+					category: "Emprego",
 					amount: 4000,
 					createdAt: new Date(),
-				},
-				{
-					id: 2,
-					title: "aluguel",
-					type: "withdraw",
-					amount: 1000,
-					createdAt: new Date(),
-					category: "any",
 				},
 			],
 		});
